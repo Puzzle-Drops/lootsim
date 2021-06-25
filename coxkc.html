@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html style="background-color:rgb(182, 165, 131); font-family:verdana; font-size:20px";>
+<style>
+body {
+	text-align: left;
+	font-family: verdana;
+	font-size: 24px;
+	line-height: 32px;
+	margin: 2px 2px;
+	vertical-align: middle;
+	text-size-adjust: none;
+	-webkit-text-size-adjust: none;
+	-moz-text-size-adjust: none;
+	-ms-text-size-adjust: none;
+	margin: 2px 2px;
+}
+
+button {
+	vertical-align: middle;
+	text-align: center;
+	font-size: 24px;
+	margin: 2px 2px;
+	cursor: pointer;
+}
+
+input {
+	text-align: left;
+	font-size: 24px;
+	margin: 2px 2px;
+}
+
+p {
+	text-align: left;
+	font-family: verdana;
+	font-size: 24px;
+	line-height: 32px;
+	margin: 2px 2px;
+	vertical-align: middle;
+}
+
+img {
+	vertical-align: middle;
+}
+
+.collapsible {
+	vertical-align: middle;
+	background-color: #ccc;
+	color: black;
+	cursor: pointer;
+	padding: 18px;
+	width: 600px;
+	border: none;
+	text-align: center;
+	outline: none;
+	font-size: 24px;
+}
+
+.active, .collapsible:hover {
+
+	background-color: #777;
+}
+
+.content {
+	display: none;
+	overflow: hidden;
+}
+
+</style>
+<center>
+<body>
+
+<! --Top Row-->
+<button onclick="location.href='index.html'">Home</button>
+<button><b>Cox Kc</b></button>
+<button onclick="location.href='coxlog.html'">Cox Log</button>
+<button onclick="location.href='coxmass.html'">Cox Mass</button>
+<button onclick="location.href='coxabout.html'">?</button><br></br>
+
+<! --Logo-->
+<p style="text-align: center; font-size:48px; margin-left:auto; margin-right:auto; line-height: 2px;"><img src="redgreenbluelogo.png" width="36" height="36">Loot Sim</p><br>
+
+<! --Input Fields-->
+<button type="button" class="collapsible"><img src="coxsimicons/olmlet.png"> Cox Kc</button>
+<div class="content">
+Points: <input type="text" value="30000" id="points" size = "10"><br>
+Kc: <input type="text" value="1000" id="kcgoal" size = "10"><br>
+Challenge Mode<input type="checkbox" value=1 id="challengemode" unchecked><br>
+Display Duplicates<input type="checkbox" value=1 id="displayduplicates" checked>
+</div><br>
+<button onclick="simulate()" style="font-size:36px; height: 64px; width: 600px;">Simulate</button><br></br>
+
+<! --Output Areas-->
+<center>
+<p id="printhere" style="width: 600px; font-size:24px; margin-left:auto; margin-right:auto;"></p>
+<br>
+<p id="printhere2" style="width: 600px; margin-left:auto; margin-right:auto;"></p>
+</center>
+
+    <script >
+
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+
+
+    function simulate() {
+        //Reset Text
+        document.getElementById("printhere").innerHTML = "";
+        document.getElementById("printhere2").innerHTML = "";
+
+        //Assigning the variable to the user input
+        var points = document.getElementById("points").value;
+        var kcgoal = document.getElementById("kcgoal").value;
+        var challengemode = document.getElementById("challengemode").checked;
+        var displayduplicates = document.getElementById("displayduplicates").checked;
+        var twistedbow = 0;
+        var kodaiinsignia = 0;
+        var eldermaul = 0;
+        var dragonclaws = 0;
+        var ancestralrobebottom = 0;
+        var ancestralrobetop = 0;
+        var ancestralhat = 0;
+        var dinhsbulwark = 0;
+        var dragonhuntercrossbow = 0;
+        var twistedbuckler = 0;
+        var arcaneprayerscroll = 0;
+        var dexterousprayerscroll = 0;
+	var olmlet = 0;
+	var twistedkit = 0;
+	var metamorphicdust = 0;
+        var kccounter = 0;
+	var divpoints = 8676
+	var pointcap = 570000
+
+	//Point cap check
+	if (points > pointcap) {
+		points = pointcap;
+	}
+
+	//Output our simulation goals
+	if (challengemode > 0) {document.getElementById("printhere").innerHTML = kcgoal + "kc at Cox CM with " + points + " points per raid.<br>Drop Chance: " + (points / divpoints).toFixed(2) + "%";}
+	if (challengemode < 1) {document.getElementById("printhere").innerHTML = kcgoal + "kc at Cox with " + points + " points per raid.<br>Drop Chance: " + (points / divpoints).toFixed(2) + "%";}
+
+	while (kccounter < kcgoal) {
+
+	//Another attempt
+	kccounter++;
+
+		//Check if we get drop
+		if ((Math.random() * 100) <= (points / divpoints)) {
+
+			//We got the drop lets roll the table
+			var tableroll = (Math.random() * 100);
+			if ((tableroll < 2.9) && (twistedbow < 1 || displayduplicates > 0)) {
+				twistedbow++;
+				document.getElementById("printhere2").innerHTML += kccounter + " ";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/twistedbow.png\">";
+				document.getElementById("printhere2").innerHTML += " Twisted bow (" + twistedbow + ")<br>";
+			} else if ((tableroll < 5.8) && (kodaiinsignia < 1 || displayduplicates > 0)) {
+				kodaiinsignia++;
+				document.getElementById("printhere2").innerHTML += kccounter + " ";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/kodaiinsignia.png\">";
+				document.getElementById("printhere2").innerHTML += " Kodai insignia (" + kodaiinsignia + ")<br>";
+			} else if ((tableroll < 8.7) && (eldermaul < 1 || displayduplicates > 0)) {
+				eldermaul++;
+				document.getElementById("printhere2").innerHTML += kccounter + " ";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/eldermaul.png\">";
+				document.getElementById("printhere2").innerHTML += " Elder maul (" + eldermaul + ")<br>";
+			} else if ((tableroll < 13.05) && (dragonclaws < 1 || displayduplicates > 0)) {
+				dragonclaws++;
+				document.getElementById("printhere2").innerHTML += kccounter + " ";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dragonclaws.png\">";
+				document.getElementById("printhere2").innerHTML += " Dragon claws (" + dragonclaws + ")<br>";
+			} else if ((tableroll < 17.4) && (ancestralrobebottom < 1 || displayduplicates > 0)) {
+				ancestralrobebottom++;
+				document.getElementById("printhere2").innerHTML += kccounter + " ";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralrobebottom.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral robe bottom (" + ancestralrobebottom + ")<br>";
+			} else if ((tableroll < 21.75) && (ancestralrobetop < 1 || displayduplicates > 0)) {
+				ancestralrobetop++;
+				document.getElementById("printhere2").innerHTML += kccounter + " ";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralrobetop.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral robe top (" + ancestralrobetop + ")<br>";
+			} else if ((tableroll < 26.1) && (ancestralhat < 1 || displayduplicates > 0)) {
+				ancestralhat++;
+				document.getElementById("printhere2").innerHTML += kccounter + " ";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralhat.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral hat (" + ancestralhat + ")<br>";
+			} else if ((tableroll < 30.45) && (dinhsbulwark < 1 || displayduplicates > 0)) {
+				dinhsbulwark++;
+				document.getElementById("printhere2").innerHTML += kccounter + " ";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dinhsbulwark.png\">";
+				document.getElementById("printhere2").innerHTML += " Dinh\'s bulwark (" + dinhsbulwark + ")<br>";
+			} else if ((tableroll < 36.25) && (dragonhuntercrossbow < 1 || displayduplicates > 0)) {
+				dragonhuntercrossbow++;
+				document.getElementById("printhere2").innerHTML += kccounter + " ";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dragonhuntercrossbow.png\">";
+				document.getElementById("printhere2").innerHTML += " Dragon hunter crossbow (" + dragonhuntercrossbow + ")<br>";
+			} else if ((tableroll < 42.05) && (twistedbuckler < 1 || displayduplicates > 0)) {
+				twistedbuckler++;
+				document.getElementById("printhere2").innerHTML += kccounter + " ";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/twistedbuckler.png\">";
+				document.getElementById("printhere2").innerHTML += " Twisted buckler (" + twistedbuckler + ")<br>";
+			} else if ((tableroll < 71.04) && (arcaneprayerscroll < 1 || displayduplicates > 0)) {
+				arcaneprayerscroll++;
+				document.getElementById("printhere2").innerHTML += kccounter + " ";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/arcaneprayerscroll.png\">";
+				document.getElementById("printhere2").innerHTML += " Arcane prayer scroll (" + arcaneprayerscroll + ")<br>";
+			} else if ((tableroll >= 71.04) && (dexterousprayerscroll < 1 || displayduplicates > 0)) {
+				dexterousprayerscroll++;
+				document.getElementById("printhere2").innerHTML += kccounter + " ";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dexterousprayerscroll.png\">";
+				document.getElementById("printhere2").innerHTML += " Dexterous prayer scroll (" + dexterousprayerscroll + ")<br>";
+			}
+
+			//Pet chance
+			if (((Math.random() * 53) <= 1) && (olmlet < 1 || displayduplicates > 0)) {
+				olmlet++;
+				document.getElementById("printhere2").innerHTML += kccounter + " ";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/olmlet.png\">";
+				document.getElementById("printhere2").innerHTML += " Olmlet (" + olmlet + ")<br>";
+			}
+                }
+
+		//CM chance
+		if (challengemode > 0) {
+			if (((Math.random() * 75) <= 1) && (twistedkit < 3 || displayduplicates > 0)) {
+				twistedkit++;
+				document.getElementById("printhere2").innerHTML += kccounter + " ";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/twistedkit.png\">";
+				document.getElementById("printhere2").innerHTML += " Twisted kit (" + twistedkit + ")<br>";
+			}
+			if (((Math.random() * 400) <= 1) && (metamorphicdust < 1 || displayduplicates > 0)) {
+				metamorphicdust++;
+				document.getElementById("printhere2").innerHTML += kccounter + " ";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/metamorphicdust.png\">";
+				document.getElementById("printhere2").innerHTML += " Metamorphic dust (" + metamorphicdust + ")<br>";
+			}
+		}
+	}
+}
+
+
+
+    </script>
+</body>
+</center>
+</html> 

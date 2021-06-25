@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html style="background-color:rgb(182, 165, 131); font-family:verdana; font-size:20px";>
+<style>
+body {
+	text-align: left;
+	font-family: verdana;
+	font-size: 24px;
+	line-height: 32px;
+	margin: 2px 2px;
+	vertical-align: middle;
+	text-size-adjust: none;
+	-webkit-text-size-adjust: none;
+	-moz-text-size-adjust: none;
+	-ms-text-size-adjust: none;
+	margin: 2px 2px;
+}
+
+button {
+	vertical-align: middle;
+	text-align: center;
+	font-size: 24px;
+	margin: 2px 2px;
+	cursor: pointer;
+}
+
+input {
+	text-align: left;
+	font-size: 24px;
+	margin: 2px 2px;
+}
+
+p {
+	text-align: left;
+	font-family: verdana;
+	font-size: 24px;
+	line-height: 32px;
+	margin: 2px 2px;
+	vertical-align: middle;
+}
+
+img {
+	vertical-align: middle;
+}
+
+.collapsible {
+	vertical-align: middle;
+	background-color: #ccc;
+	color: black;
+	cursor: pointer;
+	padding: 18px;
+	width: 600px;
+	border: none;
+	text-align: center;
+	outline: none;
+	font-size: 24px;
+}
+
+.active, .collapsible:hover {
+
+	background-color: #777;
+}
+
+.content {
+	display: none;
+	overflow: hidden;
+}
+
+</style>
+<center>
+<body>
+
+<! --Top Row-->
+<button onclick="location.href='index.html'">Home</button>
+<button><b>1 Item</b></button>
+<button onclick="location.href='2items.html'">2 Items</button>
+<button onclick="location.href='3items.html'">3 Items</button>
+<button onclick="location.href='itemabout.html'">?</button><br></br>
+
+<! --Logo-->
+<p style="text-align: center; font-size:48px; margin-left:auto; margin-right:auto; line-height: 2px;"><img src="redgreenbluelogo.png" width="36" height="36">Loot Sim</p><br>
+
+<! --Input Fields-->
+<button type="button" class="collapsible"><img src="red.png" width="14" height="14"> Item 1</button>
+<div class="content">
+Item: <input type="text" value="Twisted Kit" id="itemname" size = "22"> <br>
+Goal: <input type="text" value="3" id="itemgoal" size = "4">
+Rate: 1/<input type="text" value="75" id="itemrate" size = "4">
+</div><br>
+
+Iterations: <input type="text" value="1" id="iterationsgoal" size = "4" maxlength = "4"><br>
+<button onclick="simulate()" style="font-size:36px; height: 64px; width: 600px;">Simulate</button><br></br>
+
+<! --Output Areas-->
+<p id="printhere" style="font-size:24px; width: 600px; margin-left:auto; margin-right:auto;"></p>
+<br>
+<p id="printhere2" style="width: 600px; margin-left:auto; margin-right:auto;"></p>
+
+    <script >
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+
+    function simulate() {
+        //Reset Text
+        document.getElementById("printhere").innerHTML = " ";
+        document.getElementById("printhere2").innerHTML = " ";
+
+        //Assigning the variable to the user input
+        var iterationsgoal = document.getElementById("iterationsgoal").value;
+        var itemname = document.getElementById("itemname").value;
+        var itemgoal = document.getElementById("itemgoal").value;
+        var itemrate = document.getElementById("itemrate").value;
+        var itemcounter = 0;
+        var itemtotal = 0;
+        var itemfast = itemrate * 50;
+        var itemlong = 0;
+
+        var iterationcounter = 0;
+        var attempts = 0;
+
+        //Print the input here
+        document.getElementById("printhere").innerHTML = "Simulating " + iterationsgoal + " iterations of obtaining " + itemgoal + " " + itemname + "s.";
+
+        //Iteration of Goal Simulation
+        while (iterationcounter < iterationsgoal) {
+
+            //Item Drop Simulation
+            while (itemcounter < itemgoal) {
+
+                //Another attempt
+                attempts++;
+
+                //Check if we get drop, make sure we aren't getting duplicates
+                if ((Math.floor(Math.random() * itemrate) == Math.floor(Math.random() * itemrate)) && (itemcounter < itemgoal)) {
+                    //If only one iteration display we got it
+                    itemcounter++
+                    if (iterationsgoal == 1) {
+			document.getElementById("printhere2").innerHTML += attempts + " ";
+			document.getElementById("printhere2").innerHTML += "<img src=\"red.png\" width=\"14\" height=\"14\">";
+                        document.getElementById("printhere2").innerHTML += " " + itemname + " (" + itemcounter + ")<br>";
+                    }
+                }
+            }
+
+            //Iteration complete
+            iterationcounter++;
+            //Multiple iterations
+            if (iterationsgoal > 1) {
+                //Set fastest record
+                if (itemfast > attempts) {
+                    itemfast = attempts;
+                }
+                //Set longest record
+                if (itemlong < attempts) {
+                    itemlong = attempts;
+                }
+            }
+			
+            //Reset values for next iteration
+            itemtotal += attempts;
+            attempts = 0;
+            itemcounter = 0;
+
+        }
+
+        //Multiple iterations output
+        if (iterationsgoal > 1) {
+            document.getElementById("printhere2").innerHTML += "Fastest: " + itemfast + "<br>";
+            document.getElementById("printhere2").innerHTML += "Average: " + (itemtotal / iterationsgoal).toFixed(0) + "<br>";
+            document.getElementById("printhere2").innerHTML += "Longest: " + itemlong + "<br>";
+        }
+    }
+    </script>
+</body>
+</center>
+</html> 
