@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html style="background-color:rgb(182, 165, 131); font-family:verdana; font-size:20px";>
+<style>
+body {
+	text-align: left;
+	font-family: verdana;
+	font-size: 24px;
+	line-height: 32px;
+	margin: 2px 2px;
+	vertical-align: middle;
+	text-size-adjust: none;
+	-webkit-text-size-adjust: none;
+	-moz-text-size-adjust: none;
+	-ms-text-size-adjust: none;
+	margin: 2px 2px;
+}
+
+button {
+	vertical-align: middle;
+	text-align: center;
+	font-size: 24px;
+	margin: 2px 2px;
+	cursor: pointer;
+}
+
+input {
+	text-align: left;
+	font-size: 24px;
+	margin: 2px 2px;
+}
+
+p {
+	text-align: left;
+	font-family: verdana;
+	font-size: 24px;
+	line-height: 32px;
+	margin: 2px 2px;
+	vertical-align: middle;
+}
+
+img {
+	vertical-align: middle;
+}
+
+.collapsible {
+	vertical-align: middle;
+	background-color: #ccc;
+	color: black;
+	cursor: pointer;
+	padding: 18px;
+	width: 600px;
+	border: none;
+	text-align: center;
+	outline: none;
+	font-size: 24px;
+}
+
+.active, .collapsible:hover {
+
+	background-color: #777;
+}
+
+.content {
+	display: none;
+	overflow: hidden;
+}
+
+</style>
+<center>
+<body>
+
+<! --Top Row-->
+<button onclick="location.href='index.html'">Home</button>
+<button onclick="location.href='coxkc.html'">Cox Kc</button>
+<button onclick="location.href='coxlog.html'">Cox Log</button>
+<button><b>Cox Mass</b></button>
+<button onclick="location.href='coxabout.html'">?</button><br></br>
+
+<! --Logo-->
+<p style="text-align: center; font-size:48px; margin-left:auto; margin-right:auto; line-height: 2px;"><img src="redgreenbluelogo.png" width="36" height="36">Loot Sim</p><br>
+
+<! --Input Fields-->
+<button type="button" class="collapsible"><img src="coxsimicons/olmletmass.png"> Cox Mass</button>
+<div class="content">
+Points: <input type="text" value="3420000" id="points" size = "10"><br>
+Kc: <input type="text" value="20" id="kcgoal" size = "10"><br>
+</div><br>
+<button onclick="simulate()" style="font-size:36px; height: 64px; width: 600px;">Simulate</button><br></br>
+
+<! --Output Areas-->
+<center>
+<p id="printhere" style="width: 650px; font-size:18px; line-height: 20px; margin-left:auto; margin-right:auto;"></p>
+<br>
+<p id="printhere2" style="width: 650px; margin-left:auto; margin-right:auto;"></p>
+</center>
+
+    <script >
+
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+
+    function simulate() {
+        //Reset Text
+        document.getElementById("printhere").innerHTML = "";
+        document.getElementById("printhere2").innerHTML = "";
+
+        //Assigning the variable to the user input
+        var points = document.getElementById("points").value;
+        var kcgoal = document.getElementById("kcgoal").value;
+        var twistedbow = 0;
+        var kodaiinsignia = 0;
+        var eldermaul = 0;
+        var dragonclaws = 0;
+        var ancestralrobebottom = 0;
+        var ancestralrobetop = 0;
+        var ancestralhat = 0;
+        var dinhsbulwark = 0;
+        var dragonhuntercrossbow = 0;
+        var twistedbuckler = 0;
+        var arcaneprayerscroll = 0;
+        var dexterousprayerscroll = 0;
+	var olmlet = 0;
+	var twistedkit = 0;
+	var metamorphicdust = 0;
+        var kccounter = 0;
+	var divpoints = 8676
+	var pointcap = 570000
+	var points2 = 0;
+	var points3 = 0;
+	var points4 = 0;
+	var points5 = 0;
+	var points6 = 0;
+	var checkdrop = 0;
+
+	//Output our simulation goals before point correction
+	document.getElementById("printhere").innerHTML = kcgoal + " kc at Cox with " + points + " points per raid.<br>";
+
+	//Point cap check
+	if (points > pointcap) {
+		points2 = (points - pointcap);
+		points = pointcap;
+	}
+
+	if (points2 > pointcap) {
+		points3 = (points2 - pointcap);
+		points2 = pointcap;
+	}
+
+	if (points3 > pointcap) {
+		points4 = (points3 - pointcap);
+		points3 = pointcap;
+	}
+
+	if (points4 > pointcap) {
+		points5 = (points4 - pointcap);
+		points4 = pointcap;
+	}
+
+	if (points5 > pointcap) {
+		points6 = (points5 - pointcap);
+		points5 = pointcap;
+	}
+
+	if (points6 > pointcap) {
+		points6 = pointcap;
+	}
+
+	//Output our simulation goals after point correction
+	document.getElementById("printhere").innerHTML += "Roll 1: " + points + " | Drop Chance: " + (points / divpoints).toFixed(2) + "%";
+	if (points2 > 0) {document.getElementById("printhere").innerHTML += "<br>Roll 2: " + points2 + " | Drop Chance: " + (points2 / divpoints).toFixed(2) + "%";}
+	if (points3 > 0) {document.getElementById("printhere").innerHTML += "<br>Roll 3: " + points3 + " | Drop Chance: " + (points3 / divpoints).toFixed(2) + "%";}
+	if (points4 > 0) {document.getElementById("printhere").innerHTML += "<br>Roll 4: " + points4 + " | Drop Chance: " + (points4 / divpoints).toFixed(2) + "%";}
+	if (points5 > 0) {document.getElementById("printhere").innerHTML += "<br>Roll 5: " + points5 + " | Drop Chance: " + (points5 / divpoints).toFixed(2) + "%";}
+	if (points6 > 0) {document.getElementById("printhere").innerHTML += "<br>Roll 6: " + points6 + " | Drop Chance: " + (points6 / divpoints).toFixed(2) + "%";}
+
+	while (kccounter < kcgoal) {
+
+	//Another attempt
+	kccounter++;
+	if (kccounter > 1) {
+		document.getElementById("printhere2").innerHTML += "<br>Raid " + kccounter;
+	} else {
+		document.getElementById("printhere2").innerHTML += "Raid " + kccounter;
+	}
+
+		//1Check if we get drop
+		if ((Math.random() * 100) <= (points / divpoints)) {
+
+			//We got the drop lets roll the table
+			var tableroll = (Math.random() * 100);
+			if (tableroll < 2.9) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/twistedbow.png\">";
+				document.getElementById("printhere2").innerHTML += " Twisted bow (" + checkdrop + ")";
+			} else if (tableroll < 5.8) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/kodaiinsignia.png\">";
+				document.getElementById("printhere2").innerHTML += " Kodai insignia (" + checkdrop + ")";
+			} else if (tableroll < 8.7) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/eldermaul.png\">";
+				document.getElementById("printhere2").innerHTML += " Elder maul (" + checkdrop + ")";
+			} else if (tableroll < 13.05) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dragonclaws.png\">";
+				document.getElementById("printhere2").innerHTML += " Dragon claws (" + checkdrop + ")";
+			} else if (tableroll < 17.4) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralrobebottom.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral robe bottom (" + checkdrop + ")";
+			} else if (tableroll < 21.75) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralrobetop.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral robe top (" + checkdrop + ")";
+			} else if (tableroll < 26.1) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralhat.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral hat (" + checkdrop + ")";
+			} else if (tableroll < 30.45) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dinhsbulwark.png\">";
+				document.getElementById("printhere2").innerHTML += " Dinh\'s bulwark (" + checkdrop + ")";
+			} else if (tableroll < 36.25) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dragonhuntercrossbow.png\">";
+				document.getElementById("printhere2").innerHTML += " Dragon hunter crossbow (" + checkdrop + ")";
+			} else if (tableroll < 42.05) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/twistedbuckler.png\">";
+				document.getElementById("printhere2").innerHTML += " Twisted buckler (" + checkdrop + ")";
+			} else if (tableroll < 71.04) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/arcaneprayerscroll.png\">";
+				document.getElementById("printhere2").innerHTML += " Arcane prayer scroll (" + checkdrop + ")";
+			} else if (tableroll >= 71.04) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dexterousprayerscroll.png\">";
+				document.getElementById("printhere2").innerHTML += " Dexterous prayer scroll (" + checkdrop + ")";
+			}
+
+			//Pet chance
+			if ((Math.random() * 53) <= 1) {
+				olmlet++;
+				document.getElementById("printhere2").innerHTML += " <img src=\"coxsimicons/olmlet.png\">";
+			}
+                }
+
+		//2Check if we get drop
+		if ((Math.random() * 100) <= (points2 / divpoints)) {
+
+			//We got the drop lets roll the table
+			var tableroll = (Math.random() * 100);
+			if (tableroll < 2.9) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/twistedbow.png\">";
+				document.getElementById("printhere2").innerHTML += " Twisted bow (" + checkdrop + ")";
+			} else if (tableroll < 5.8) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/kodaiinsignia.png\">";
+				document.getElementById("printhere2").innerHTML += " Kodai insignia (" + checkdrop + ")";
+			} else if (tableroll < 8.7) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/eldermaul.png\">";
+				document.getElementById("printhere2").innerHTML += " Elder maul (" + checkdrop + ")";
+			} else if (tableroll < 13.05) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dragonclaws.png\">";
+				document.getElementById("printhere2").innerHTML += " Dragon claws (" + checkdrop + ")";
+			} else if (tableroll < 17.4) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralrobebottom.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral robe bottom (" + checkdrop + ")";
+			} else if (tableroll < 21.75) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralrobetop.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral robe top (" + checkdrop + ")";
+			} else if (tableroll < 26.1) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralhat.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral hat (" + checkdrop + ")";
+			} else if (tableroll < 30.45) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dinhsbulwark.png\">";
+				document.getElementById("printhere2").innerHTML += " Dinh\'s bulwark (" + checkdrop + ")";
+			} else if (tableroll < 36.25) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dragonhuntercrossbow.png\">";
+				document.getElementById("printhere2").innerHTML += " Dragon hunter crossbow (" + checkdrop + ")";
+			} else if (tableroll < 42.05) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/twistedbuckler.png\">";
+				document.getElementById("printhere2").innerHTML += " Twisted buckler (" + checkdrop + ")";
+			} else if (tableroll < 71.04) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/arcaneprayerscroll.png\">";
+				document.getElementById("printhere2").innerHTML += " Arcane prayer scroll (" + checkdrop + ")";
+			} else if (tableroll >= 71.04) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dexterousprayerscroll.png\">";
+				document.getElementById("printhere2").innerHTML += " Dexterous prayer scroll (" + checkdrop + ")";
+			}
+
+			//Pet chance
+			if ((Math.random() * 53) <= 1) {
+				olmlet++;
+				document.getElementById("printhere2").innerHTML += " <img src=\"coxsimicons/olmlet.png\">";
+			}
+                }
+
+		//3Check if we get drop
+		if ((Math.random() * 100) <= (points3 / divpoints)) {
+
+			//We got the drop lets roll the table
+			var tableroll = (Math.random() * 100);
+			if (tableroll < 2.9) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/twistedbow.png\">";
+				document.getElementById("printhere2").innerHTML += " Twisted bow (" + checkdrop + ")";
+			} else if (tableroll < 5.8) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/kodaiinsignia.png\">";
+				document.getElementById("printhere2").innerHTML += " Kodai insignia (" + checkdrop + ")";
+			} else if (tableroll < 8.7) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/eldermaul.png\">";
+				document.getElementById("printhere2").innerHTML += " Elder maul (" + checkdrop + ")";
+			} else if (tableroll < 13.05) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dragonclaws.png\">";
+				document.getElementById("printhere2").innerHTML += " Dragon claws (" + checkdrop + ")";
+			} else if (tableroll < 17.4) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralrobebottom.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral robe bottom (" + checkdrop + ")";
+			} else if (tableroll < 21.75) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralrobetop.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral robe top (" + checkdrop + ")";
+			} else if (tableroll < 26.1) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralhat.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral hat (" + checkdrop + ")";
+			} else if (tableroll < 30.45) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dinhsbulwark.png\">";
+				document.getElementById("printhere2").innerHTML += " Dinh\'s bulwark (" + checkdrop + ")";
+			} else if (tableroll < 36.25) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dragonhuntercrossbow.png\">";
+				document.getElementById("printhere2").innerHTML += " Dragon hunter crossbow (" + checkdrop + ")";
+			} else if (tableroll < 42.05) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/twistedbuckler.png\">";
+				document.getElementById("printhere2").innerHTML += " Twisted buckler (" + checkdrop + ")";
+			} else if (tableroll < 71.04) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/arcaneprayerscroll.png\">";
+				document.getElementById("printhere2").innerHTML += " Arcane prayer scroll (" + checkdrop + ")";
+			} else if (tableroll >= 71.04) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dexterousprayerscroll.png\">";
+				document.getElementById("printhere2").innerHTML += " Dexterous prayer scroll (" + checkdrop + ")";
+			}
+
+			//Pet chance
+			if ((Math.random() * 53) <= 1) {
+				olmlet++;
+				document.getElementById("printhere2").innerHTML += " <img src=\"coxsimicons/olmlet.png\">";
+			}
+                }
+
+		//4Check if we get drop
+		if ((Math.random() * 100) <= (points4 / divpoints)) {
+
+			//We got the drop lets roll the table
+			var tableroll = (Math.random() * 100);
+			if (tableroll < 2.9) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/twistedbow.png\">";
+				document.getElementById("printhere2").innerHTML += " Twisted bow (" + checkdrop + ")";
+			} else if (tableroll < 5.8) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/kodaiinsignia.png\">";
+				document.getElementById("printhere2").innerHTML += " Kodai insignia (" + checkdrop + ")";
+			} else if (tableroll < 8.7) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/eldermaul.png\">";
+				document.getElementById("printhere2").innerHTML += " Elder maul (" + checkdrop + ")";
+			} else if (tableroll < 13.05) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dragonclaws.png\">";
+				document.getElementById("printhere2").innerHTML += " Dragon claws (" + checkdrop + ")";
+			} else if (tableroll < 17.4) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralrobebottom.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral robe bottom (" + checkdrop + ")";
+			} else if (tableroll < 21.75) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralrobetop.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral robe top (" + checkdrop + ")";
+			} else if (tableroll < 26.1) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralhat.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral hat (" + checkdrop + ")";
+			} else if (tableroll < 30.45) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dinhsbulwark.png\">";
+				document.getElementById("printhere2").innerHTML += " Dinh\'s bulwark (" + checkdrop + ")";
+			} else if (tableroll < 36.25) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dragonhuntercrossbow.png\">";
+				document.getElementById("printhere2").innerHTML += " Dragon hunter crossbow (" + checkdrop + ")";
+			} else if (tableroll < 42.05) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/twistedbuckler.png\">";
+				document.getElementById("printhere2").innerHTML += " Twisted buckler (" + checkdrop + ")";
+			} else if (tableroll < 71.04) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/arcaneprayerscroll.png\">";
+				document.getElementById("printhere2").innerHTML += " Arcane prayer scroll (" + checkdrop + ")";
+			} else if (tableroll >= 71.04) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dexterousprayerscroll.png\">";
+				document.getElementById("printhere2").innerHTML += " Dexterous prayer scroll (" + checkdrop + ")";
+			}
+
+			//Pet chance
+			if ((Math.random() * 53) <= 1) {
+				olmlet++;
+				document.getElementById("printhere2").innerHTML += " <img src=\"coxsimicons/olmlet.png\">";
+			}
+                }
+
+		//5Check if we get drop
+		if ((Math.random() * 100) <= (points5 / divpoints)) {
+
+			//We got the drop lets roll the table
+			var tableroll = (Math.random() * 100);
+			if (tableroll < 2.9) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/twistedbow.png\">";
+				document.getElementById("printhere2").innerHTML += " Twisted bow (" + checkdrop + ")";
+			} else if (tableroll < 5.8) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/kodaiinsignia.png\">";
+				document.getElementById("printhere2").innerHTML += " Kodai insignia (" + checkdrop + ")";
+			} else if (tableroll < 8.7) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/eldermaul.png\">";
+				document.getElementById("printhere2").innerHTML += " Elder maul (" + checkdrop + ")";
+			} else if (tableroll < 13.05) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dragonclaws.png\">";
+				document.getElementById("printhere2").innerHTML += " Dragon claws (" + checkdrop + ")";
+			} else if (tableroll < 17.4) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralrobebottom.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral robe bottom (" + checkdrop + ")";
+			} else if (tableroll < 21.75) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralrobetop.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral robe top (" + checkdrop + ")";
+			} else if (tableroll < 26.1) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralhat.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral hat (" + checkdrop + ")";
+			} else if (tableroll < 30.45) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dinhsbulwark.png\">";
+				document.getElementById("printhere2").innerHTML += " Dinh\'s bulwark (" + checkdrop + ")";
+			} else if (tableroll < 36.25) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dragonhuntercrossbow.png\">";
+				document.getElementById("printhere2").innerHTML += " Dragon hunter crossbow (" + checkdrop + ")";
+			} else if (tableroll < 42.05) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/twistedbuckler.png\">";
+				document.getElementById("printhere2").innerHTML += " Twisted buckler (" + checkdrop + ")";
+			} else if (tableroll < 71.04) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/arcaneprayerscroll.png\">";
+				document.getElementById("printhere2").innerHTML += " Arcane prayer scroll (" + checkdrop + ")";
+			} else if (tableroll >= 71.04) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dexterousprayerscroll.png\">";
+				document.getElementById("printhere2").innerHTML += " Dexterous prayer scroll (" + checkdrop + ")";
+			}
+
+			//Pet chance
+			if ((Math.random() * 53) <= 1) {
+				olmlet++;
+				document.getElementById("printhere2").innerHTML += " <img src=\"coxsimicons/olmlet.png\">";
+			}
+                }
+
+		//6Check if we get drop
+		if ((Math.random() * 100) <= (points6 / divpoints)) {
+
+			//We got the drop lets roll the table
+			var tableroll = (Math.random() * 100);
+			if (tableroll < 2.9) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/twistedbow.png\">";
+				document.getElementById("printhere2").innerHTML += " Twisted bow (" + checkdrop + ")";
+			} else if (tableroll < 5.8) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/kodaiinsignia.png\">";
+				document.getElementById("printhere2").innerHTML += " Kodai insignia (" + checkdrop + ")";
+			} else if (tableroll < 8.7) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/eldermaul.png\">";
+				document.getElementById("printhere2").innerHTML += " Elder maul (" + checkdrop + ")";
+			} else if (tableroll < 13.05) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dragonclaws.png\">";
+				document.getElementById("printhere2").innerHTML += " Dragon claws (" + checkdrop + ")";
+			} else if (tableroll < 17.4) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralrobebottom.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral robe bottom (" + checkdrop + ")";
+			} else if (tableroll < 21.75) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralrobetop.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral robe top (" + checkdrop + ")";
+			} else if (tableroll < 26.1) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/ancestralhat.png\">";
+				document.getElementById("printhere2").innerHTML += " Ancestral hat (" + checkdrop + ")";
+			} else if (tableroll < 30.45) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dinhsbulwark.png\">";
+				document.getElementById("printhere2").innerHTML += " Dinh\'s bulwark (" + checkdrop + ")";
+			} else if (tableroll < 36.25) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dragonhuntercrossbow.png\">";
+				document.getElementById("printhere2").innerHTML += " Dragon hunter crossbow (" + checkdrop + ")";
+			} else if (tableroll < 42.05) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/twistedbuckler.png\">";
+				document.getElementById("printhere2").innerHTML += " Twisted buckler (" + checkdrop + ")";
+			} else if (tableroll < 71.04) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/arcaneprayerscroll.png\">";
+				document.getElementById("printhere2").innerHTML += " Arcane prayer scroll (" + checkdrop + ")";
+			} else if (tableroll >= 71.04) {
+				checkdrop++;
+				document.getElementById("printhere2").innerHTML += "<br>";
+				document.getElementById("printhere2").innerHTML += "<img src=\"coxsimicons/dexterousprayerscroll.png\">";
+				document.getElementById("printhere2").innerHTML += " Dexterous prayer scroll (" + checkdrop + ")";
+			}
+
+			//Pet chance
+			if ((Math.random() * 53) <= 1) {
+				olmlet++;
+				document.getElementById("printhere2").innerHTML += " <img src=\"coxsimicons/olmlet.png\">";
+			}
+                }
+
+			document.getElementById("printhere2").innerHTML += "<br>";
+			checkdrop = 0;
+	}
+}
+
+
+
+    </script>
+</body>
+</center>
+</html> 
